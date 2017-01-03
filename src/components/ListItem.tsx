@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TouchableWithoutFeedback, LayoutAnimation } from 'react-native';
+import { View, Text, StyleSheet, TouchableWithoutFeedback, LayoutAnimation, UIManager, Platform } from 'react-native';
 import { CardSection } from './common';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
@@ -19,18 +19,16 @@ interface IListItem {
 
 
 class ListItem extends React.Component<IListItem, any>{
+    constructor(props: IListItem) {
+        super(props);
+        if(Platform.OS == 'android')
+        {
+            UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+        }
+    }
 
     componentWillUpdate() {
-        LayoutAnimation.spring({
-            create:{
-                type: LayoutAnimation.Types.spring,
-                property: LayoutAnimation.Properties.opacity
-            },
-            update:{
-                type: LayoutAnimation.Types.easeInEaseOut
-            },
-            duration: 2000
-        });
+        LayoutAnimation.spring();
     }
 
     renderDescription() {
